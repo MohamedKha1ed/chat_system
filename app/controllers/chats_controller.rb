@@ -24,17 +24,8 @@ class ChatsController < ApplicationController
   # POST /chats
   # POST /chats.json
   def create
-    @chat = Chat.new(chat_params)
-
-    respond_to do |format|
-      if @chat.save
-        format.html { redirect_to @chat, notice: 'Chat was successfully created.' }
-        format.json { render :show, status: :created, location: @chat }
-      else
-        format.html { render :new }
-        format.json { render json: @chat.errors, status: :unprocessable_entity }
-      end
-    end
+    ChatWorker.perform_async(params[:chat][:app_token], params[:chat][:name])
+    render text: "Chat Will be created soon"
   end
 
   # PATCH/PUT /chats/1
@@ -69,6 +60,6 @@ class ChatsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def chat_params
-      params.require(:chat).permit(:number, :name)
+      params.require(:chat).permit(:name, :app_token)
     end
 end
