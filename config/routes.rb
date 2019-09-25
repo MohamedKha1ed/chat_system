@@ -5,6 +5,9 @@ Rails.application.routes.draw do
 
   resources :messages
   resources :chats do
+    member do
+      get 'search/:search_text', to: 'chats#search'
+    end
     collection do
       post :create_message
     end

@@ -4,10 +4,7 @@ class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
   def index
-    # @messages = Message.all
-    # @messages = []
-    @messages = Message.search "hopa"
-    render json: {status: "Done"}
+    @messages = Message.all
   end
 
   # GET /messages/1

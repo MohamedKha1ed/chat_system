@@ -12,6 +12,16 @@ class ChatsController < ApplicationController
     end
   end
 
+  def search
+    @messages = Message.search_in_chat(params[:id], params[:search_text]).map do |message|
+      {
+          content: message['content'],
+          message_number: message['number']
+      }
+    end
+    render json: @messages, status: :ok
+  end
+
   # GET /chats
   # GET /chats.json
   def index
