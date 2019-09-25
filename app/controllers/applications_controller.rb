@@ -1,6 +1,16 @@
 class ApplicationsController < ApplicationController
   before_action :set_application, only: [:show, :edit, :update, :destroy]
 
+  def create_chat
+    application = Application.find_by(token: params[:chat][:app_token]) if params[:chat] && params[:chat][:app_token]
+    result = application.create_chat(params[:chat][:name]) if application.present?
+    if result.present? && result[:status] == "created"
+      render json: result[:chat], status: :created
+    else
+      render json: {error_message: "Unable to create chat"}, status: :unprocessable_entity
+    end
+  end
+
   # GET /applications
   # GET /applications.json
   def index

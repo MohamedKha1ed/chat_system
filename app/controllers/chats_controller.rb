@@ -1,6 +1,17 @@
 class ChatsController < ApplicationController
   before_action :set_chat, only: [:show, :edit, :update, :destroy]
 
+  def create_message
+    application = Application.find_by(token: params[:chat][:app_token]) if params[:chat]
+    chat = Chat.find_by(application_id: application.id, number: params[:message][:chat_number]) if application.present? && params[:message]
+    result = chat.create_message(params[:message][:content]) if chat.present?
+    if result.present? &&  result[:status] == "created"
+      render json: result[:chat], status: :created
+    else
+      render json: {error_message: "Unable to create chat"}, status: :unprocessable_entity
+    end
+  end
+
   # GET /chats
   # GET /chats.json
   def index
@@ -24,8 +35,17 @@ class ChatsController < ApplicationController
   # POST /chats
   # POST /chats.json
   def create
-    ChatWorker.perform_async(params[:chat][:app_token], params[:chat][:name])
-    render text: "Chat Will be created soon"
+    @chat = Chat.new(chat_params)
+
+    respond_to do |format|
+      if @chat.save
+        format.html { redirect_to @chat, notice: 'Chat was successfully created.' }
+        format.json { render :show, status: :created, location: @chat }
+      else
+        format.html { render :new }
+        format.json { render json: @chat.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # PATCH/PUT /chats/1

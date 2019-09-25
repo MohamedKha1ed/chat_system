@@ -4,7 +4,14 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => "/sidekiq"
 
   resources :messages
-  resources :chats
-  resources :applications
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  resources :chats do
+    collection do
+      post :create_message
+    end
+  end
+  resources :applications do
+    collection do
+      post :create_chat
+    end
+  end
 end

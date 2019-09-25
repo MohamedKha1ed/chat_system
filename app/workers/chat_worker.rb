@@ -1,8 +1,7 @@
 class ChatWorker
   include Sidekiq::Worker
-  sidekiq_options retry: false
 
-  def perform(app_token, name)
-    Chat.create_chat(app_token, name)
+  def perform(application_id, name, number)
+    Chat.create!(application_id: application_id, name: name, number: number)
   end
 end

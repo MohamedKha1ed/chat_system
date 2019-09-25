@@ -2,7 +2,15 @@ class Chat < ApplicationRecord
   has_many :messages
   belongs_to :application
 
-  def self.create_chat(app_token, name)
-    Chat.create(application_id: Application.find_by(token: app_token).try(:id), name: name)
+  validates :application_id, presence: true
+  validates :number, presence: true
+
+  def create_message(content)
+    self.with_lock do
+      message_number = self.messages_count + 1
+      MessageWorker.perform_async(self.id, content, message_number)
+      self.update(messages_count: message_number)
+      return {chat: {message_number: message_number}, status: "created"}
+    end
   end
 end
