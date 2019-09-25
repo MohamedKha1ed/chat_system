@@ -5,6 +5,10 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.0.0'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.3.18', '< 0.5'
+
+# Elastic Search
+gem 'searchkick', '~> 3.1.3'
+
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
