@@ -1,24 +1,58 @@
-# README
+# Chat System
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a simple application to create chats and messages using the following technologies
 
-Things you may want to cover:
+* Ruby in Rails
+* Elastic Search
+* Redis
+* SideKiq
+* Docker
+* Docker Compose
 
-* Ruby version
+### Requirements to Run
+you must have the following installed
+* Docker
+* Docker Compose
 
-* System dependencies
 
-* Configuration
+###Steps to run
+1. clone the repository
+1. run `docker-compose up`
 
-* Database creation
+* Note that application is running on port 3001
 
-* Database initialization
+##API Documentation
 
-* How to run the test suite
+#### Create Chat:
+* Type: Post 
+* url: http://localhost:3001/applications/create_chat
+* body: `{
+         	"chat": {
+         		"app_token": "token",
+         		"name": "chat name"
+         	}
+         }`
+* response: chat number
+ 
+### Create Message:
 
-* Services (job queues, cache servers, search engines, etc.)
+ * Type: Post 
+ * url: http://localhost:3001/chats/create_message
+ * body: `{
+          	"chat": {
+          		"app_token": "token"
+          	},
+          	"message": {
+          		"content": "content",
+          		"chat_number": "chat number"
+          	}
+          }`
+ * response: message number
+ 
+ ### Search for message in chat
+ 
+  * Type: Get 
+  * url: http://localhost:3001/chats/:id/search/:search_text
+  * response: messages that meet search text
 
-* Deployment instructions
 
-* ...
