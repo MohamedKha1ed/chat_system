@@ -21,7 +21,7 @@ gem 'coffee-rails', '~> 4.2'
 # gem 'therubyracer', platforms: :ruby
 
 # Sidekiq
-gem 'sidekiq', '~> 5.2.0'
+gem 'sidekiq', '~> 6.4.0'
 gem 'sinatra', github: 'sinatra/sinatra'
 
 # Use jquery as the JavaScript library
